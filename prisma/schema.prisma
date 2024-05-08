@@ -1,0 +1,72 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+
+model user {
+  id          String           @id @default(uuid())
+  username    String           @unique
+  fullname    String
+  email       String           @unique
+  password    String
+  photoprofil String
+  bio         String
+  createdAt   DateTime         @default(now())
+  updateAt    DateTime         @updatedAt
+  threads     thread[]
+  follower    userFolowing[]   @relation(name: "Follower")
+  following   userFolowing[]   @relation(name: "Following")
+  like        like[]
+  replies     reply[]
+}
+
+model userFolowing {
+  id String @id @default(uuid())
+  follower user @relation(name: "Follower", fields: [followerid], references: [id], onDelete: Cascade)
+  followerid String
+  following user @relation(name: "Following", fields: [followingid], references: [id], onDelete: Cascade)
+  followingid String
+  followedAt DateTime @default(now())
+  isFollow Boolean @default(false)
+}
+
+model thread {
+  id String @id @default(uuid())
+  content String
+  image String?
+  createdAt DateTime @default(now())
+  isliked Boolean @default(false)
+  like like[]
+  replies reply[]
+  createdBy user @relation(fields: [userId],references: [id],onDelete: Cascade)
+  userId String
+}
+model reply {
+  id String @id @default(uuid())
+  content String
+  image String?
+  createdAt DateTime @default(now())
+  thread thread @relation(fields: [threadId],references: [id],onDelete: Cascade)
+  threadId String
+  createdBy user @relation(fields: [userId],references: [id],onDelete: Cascade)
+  userId String
+}
+
+model like {
+  id  String @id @default(uuid())
+  user user @relation(fields: [userId],references: [id],onDelete: Cascade)
+  userId String
+  thread thread @relation(fields: [threadId],references: [id],onDelete: Cascade)
+  threadId String
+}
