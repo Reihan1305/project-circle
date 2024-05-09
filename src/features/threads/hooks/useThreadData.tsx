@@ -144,7 +144,7 @@ const fetchDetailThread = async (threadId: string) => {
   };
   
   export const useDetailThread = (threadId: string) => {
-    const queryClient = useQueryClient(); // Pindahkan deklarasi ini di sini
+    const queryClient = useQueryClient();
   
     return useQuery({
       queryKey: ["detail-findThreadById"],
@@ -178,7 +178,7 @@ const fetchDetailThread = async (threadId: string) => {
         reset();
       },
       onError: (error) => {
-        toast.error(getError(error), { // Perbaiki sintaks penanganan kesalahan toast
+        toast.error(getError(error), {
           position: "top-center",
           autoClose: 5000,
           hideProgressBar: false,

@@ -9,9 +9,6 @@ import Widget from "@/components/Widget";
 
 
 export default function Main({ children }: { children: ReactNode }) {
-    // children ini adalah sebuah parameter yang khusu ada pada react untuk menangani setiap komponen yang ada di react
-    // sehingga semua komponen bisa kita panggil pake si children
-
     const { isOpen, onOpen, onClose } = useDisclosure()
 
     return (

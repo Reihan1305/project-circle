@@ -78,7 +78,7 @@ interface ThreadHomeType {
     image: string;
     createdAt: string;
     updatedAt: string;
-    user: {
+    createdBy: {
         id: string;
         username: string;
         fullname: string;

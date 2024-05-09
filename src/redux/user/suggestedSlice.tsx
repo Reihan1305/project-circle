@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
 import { createSlice } from "@reduxjs/toolkit";
 import { API } from "@/utils/api";
@@ -23,7 +22,6 @@ export const getSuggested = createAsyncThunk(
     async (_, { rejectWithValue }) => {
         try {
             const token = localStorage.getItem("jwtToken");
-            // console.log("Token Sugested:", token);
 
             const response = await API.get("getsugesteduser", {
                 headers: {
@@ -42,7 +40,7 @@ export const getSuggested = createAsyncThunk(
 const suggestedSlice = createSlice({
     name: "suggested",
     initialState,
-    reducers: {}, // tidak diisi karena memakai extraReducers
+    reducers: {}, 
     extraReducers: (builder) => {
         builder.addCase(getSuggested.pending, (state) => {
             state.isLoading = true;

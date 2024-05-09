@@ -1,6 +1,6 @@
 import { Fragment } from "react";
 import {Alert,AlertDescription,AlertIcon,Box,Flex,Spinner,Text,Image} from "@chakra-ui/react";
-import moment, { now } from "moment";
+import moment from "moment";
 import { Link, useParams } from "react-router-dom";
 import { BsArrowLeft } from "react-icons/bs";
 import { useDetailThread } from "../hooks/useThreadData";

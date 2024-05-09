@@ -12,7 +12,6 @@ import EditProfilePage from '@/pages/EditProfilePage';
 import ReplyPage from '@/pages/ReplyPage';
 
 function Router() {
-    // menandakan proses pengecekan sedang dijalankan
     const [checkAuthFinish, setCheckAuthFinish] = useState<boolean>(true)
     const jwtToken = localStorage.getItem('jwtToken');
     async function authCheck() {
