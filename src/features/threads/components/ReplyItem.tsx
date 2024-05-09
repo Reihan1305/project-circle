@@ -9,6 +9,7 @@ interface ReplyItemInterface {
 
 export default function ReplyItem({ reply }: ReplyItemInterface) {
   const { isOpen, onOpen, onClose } = useDisclosure();
+console.log(reply);
 
   return (
     <Fragment>
@@ -17,23 +18,23 @@ export default function ReplyItem({ reply }: ReplyItemInterface) {
           borderRadius="full"
           boxSize="40px"
           objectFit="cover"
-          src={`${reply?.user?.profile_picture}`}
+          src={reply.createdBy.photoprofil === "" ? "../../public/user-solid.svg" : reply.createdBy.photoprofil}
           alt={`Profile Picture`}
         />
         <Box>
           <Flex mb={"5px"}>
-            <Link to={`/profile/${reply?.user?.id}`}>
+            <Link to={`/profile/${reply?.createdBy.id}`}>
               <Text fontWeight={"bold"} me={"10px"}>
-                {reply?.user?.fullname}
+                {reply?.createdBy?.fullname}
               </Text>
             </Link>
             <Box mt={"2px"} fontSize={"sm"} color={"gray.400"}>
-              <Link to={`/profile/${reply?.user?.id}`}>
-                @{reply?.user?.username}
+              <Link to={`/profile/${reply?.createdBy?.id}`}>
+                @{reply?.createdBy?.username}
               </Link>{" "}
               -{" "}
-              <Text display={"inline-block"} title={reply?.created_at}>
-                {moment(new Date(reply?.created_at)).calendar()}
+              <Text display={"inline-block"} title={reply?.createdAt}>
+                {moment(new Date(reply?.createdAt)).calendar()}
               </Text>
             </Box>
           </Flex>

@@ -52,7 +52,7 @@ export default function Profile() {
                       border={"5px solid #3a3a3a"}
                       boxSize="75px"
                       objectFit="cover"
-                      src={profileData?.photoprofil}
+                      src={profileData.photoprofil === "" ?"../../public/user-solid.svg":profileData.photoprofil}
                       alt={profileData?.fullname}
                       position={"absolute"}
                       top={"40px"}
@@ -86,13 +86,13 @@ export default function Profile() {
                   </Text>
                   <Flex mt={"10px"} gap={3}>
                     <Box fontSize={"md"}>
-                      {profileData?.follower.length}{" "}
+                      {profileData?.following.length}{" "}
                       <Text display={"inline"} color={"gray.400"}>
                         Followers
                       </Text>
                     </Box>
                     <Box fontSize={"md"}>
-                      {profileData?.following.length}{" "}
+                      {profileData?.follower.length}{" "}
                       <Text display={"inline"} color={"gray.400"}>
                         Following
                       </Text>

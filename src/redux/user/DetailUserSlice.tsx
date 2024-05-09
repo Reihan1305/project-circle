@@ -6,7 +6,7 @@
 
 import { API } from "@/utils/api"
 import getError from "@/utils/getError"
-import { PayloadAction , createAsyncThunk } from "@reduxjs/toolkit"
+import { PayloadAction, createAsyncThunk } from "@reduxjs/toolkit"
 // payload action ini tipe dari si redux toolkit yang secara default membawa payload
 // createAsyncThunk ini sama aaja fungsinya kaya async, memanggil data secara asinkron dalam pemanggilan API
 
@@ -14,50 +14,55 @@ import { PayloadAction , createAsyncThunk } from "@reduxjs/toolkit"
 import { createSlice } from "@reduxjs/toolkit"
 // ini untuk ngebuat slice di reduxnya. fungsinya untuk membagi kode agar mudah dikelola
 
-const jwtToken = localStorage.getItem("jwtToken")
-
 type initialStateT = {
-    data: UserProfileType |any;
+    data: UserProfileType | null;
     isLoading: boolean;
     isError: boolean;
     error: string;
-}
+};
 
 const initialState: initialStateT = {
     data: null,
     isLoading: true,
     isError: false,
     error: "",
-}
+};
+const jwtToken = localStorage.getItem("jwtToken");
 
 export const getDetailUser = createAsyncThunk(
     "detailUser",
-    async (userId: string, { rejectWithValue}) => {
-        try{
+    async (userId: string, { rejectWithValue }) => {
+        try {
             const response = await API.get("findbyUserid/" + userId, {
                 headers: {
-                    Authorization: `Bearer ${jwtToken}`
-                }
-            })
-            console.log(response.data.data);
-            
-            return response.data.data
-        }catch(error){
-            return rejectWithValue({errorMessage: getError(error)})
+                    Authorization: `Bearer ${jwtToken}`,
+                },
+            });
+
+            return response.data.data;
+        } catch (error) {
+            return rejectWithValue({ errorMessage: getError(error) });
         }
     }
-)
+);
+// asinkron getDetailUser menggunakan createAsyncThunk. 
+// Ini membuat pemanggilan API untuk mendapatkan detail pengguna berdasarkan ID pengguna 
+// yang diberikan. Jika berhasil, ia mengembalikan data pengguna. Jika terjadi kesalahan, 
+// ia menolak dengan nilai yang menunjukkan pesan kesalahan.
 
-const detailUserSlice = createSlice({
+
+const detailUserSlice:any = createSlice({
     name: "detailUser",
     initialState,
-    reducers: {},
+    reducers: {}, // tidak diisi karena memakai extraReducers
     extraReducers: (builder) => {
         builder.addCase(getDetailUser.pending, (state) => {
             state.isLoading = true;
+            // data sedang diproses dari API kita setting true
         });
         builder.addCase(
             getDetailUser.fulfilled,
+            // pemanggilan data API berhasil lalu di ambil datanya
             (state, action: PayloadAction<UserProfileType>) => {
                 state.data = action.payload;
                 state.isLoading = false;
@@ -67,14 +72,15 @@ const detailUserSlice = createSlice({
         );
         builder.addCase(
             getDetailUser.rejected,
-            (state,action: PayloadAction<any>) => {
+            // datanya gagal diambil, lalu diambil juga data kesalahannya
+            (state, action: PayloadAction<any>) => {
                 state.data = null;
                 state.isLoading = false;
                 state.isError = true;
-                state.error = action.payload?.errorMessage || "Unkwown Error"
+                state.error = action.payload?.errorMessage || "Unknown Error Occured";
             }
         );
-    }
-})
+    },
+});
 
-export default detailUserSlice.reducer
+export default detailUserSlice.reducer;

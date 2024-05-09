@@ -2,203 +2,192 @@ import { useQuery, useMutation, useQueryClient, useInfiniteQuery } from "@tansta
 import { toast } from "react-toastify";
 import { API } from "@/utils/api";
 import getError from "@/utils/getError";
-const jwtToken = localStorage.getItem('jwtToken');
 
-//fecth infinite threads
-const fecthInfinityThreads = async ({ pageParam = 1 }) => {
-    const response = await API.get(`findAllThread/${pageParam}`, {
-        headers: {
-            Authorization: `Bearer ${jwtToken}`,
-        }
-    })
-    
-    return response.data
-}
+const jwtToken = localStorage.getItem("jwtToken");
+
+const fetchInfinityThreads = async ({ pageParam = 1 }) => {
+  const response = await API.get(`findAllThread/${pageParam}`, {
+    headers: {
+      Authorization: `Bearer ${jwtToken}`,
+    },
+  });
+  return response.data;
+};
 
 export const useInfinityThreads = () => {
-    return useInfiniteQuery({
-        queryKey: ["threads-infinity"],
-        queryFn: fecthInfinityThreads,
-        refetchOnWindowFocus: false,
-        getNextPageParam: (LastPage, pages) => {
-            if (LastPage.data.data.length) {
-                return pages.length + 1
-            }
-            return undefined
-        },
-        initialPageParam: 1
-    })
-}
-// fetch infinity threads
+  return useInfiniteQuery({
+    queryKey: ["threads-infinity"],
+    queryFn: fetchInfinityThreads,
+    refetchOnWindowFocus: false,
+    getNextPageParam: (LastPage, pages) => {
+      if (LastPage.data.data.length) {
+        return pages.length + 1;
+      }
+      return undefined;
+    },
+    initialPageParam: 1,
+  });
+};
 
-
-// post threads
 const postThread = (thread: ThreadPostType) => {
-    return API.post("addThread", thread, {
-        headers: {
-            Authorization: `Bearer ${jwtToken}`,
-            'Content-Type': 'multipart/form-data',
-        }
-    })
-}
+  return API.post("addThread", thread, {
+    headers: {
+      Authorization: `Bearer ${jwtToken}`,
+      "Content-Type": "multipart/form-data",
+    },
+  });
+};
 
 export const usePostThread = (reset: () => void) => {
-    const queryClient = useQueryClient()
+  const queryClient = useQueryClient();
 
-    return useMutation({
-        mutationFn: postThread,
-        onSuccess: () => {
-            queryClient.invalidateQueries({
-                queryKey: ["threads-infinity"]
-            })
-            reset()
-        },
-        onError: (error) => {
-            toast.error(getError(error)), {
-                position: "top-center",
-                autoClose: 5000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "colored",
-            }
-        }
-    })
-}
-// post threads
+  return useMutation({
+    mutationFn: postThread,
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["threads-infinity"],
+      });
+      reset();
+    },
+    onError: (error) => {
+      toast.error(getError(error)),
+        {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        };
+    },
+  });
+};
 
-
-// like threads
 const postLikeThread = (threadId: string) => {
-    return API.post(`like/${threadId}`, "", {
-        headers: {
-            Authorization: `Bearer ${jwtToken}`,
-        }
-    });
+  return API.post(`like/${threadId}`, "", {
+    headers: {
+      Authorization: `Bearer ${jwtToken}`,
+    },
+  });
 };
 
 export const usePostLike = () => {
-    const queryClient = useQueryClient()
+  const queryClient = useQueryClient();
 
-    return useMutation({
-        mutationFn: postLikeThread,
-        onSuccess: () => {
-            queryClient.invalidateQueries({
-                queryKey: ["threads-infinity"]
-            })
-        },
-        onError: (error) => {
-            toast.error(getError(error)), {
-                position: "top-center",
-                autoClose: 5000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "colored",
-            }
-        }
-    })
-}
-// like threads
+  return useMutation({
+    mutationFn: postLikeThread,
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["threads-infinity"],
+      });
+    },
+    onError: (error) => {
+      toast.error(getError(error)),
+        {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        };
+    },
+  });
+};
 
-
-// delete threads
 const deleteThread = (threadId: string) => {
-    return API.delete(`deletethread/${threadId}`, {
-        headers: {
-            Authorization: `Bearer ${jwtToken}`,
-        }
-    })
-}
+  return API.delete(`deleteThread/${threadId}`, {
+    headers: {
+      Authorization: `Bearer ${jwtToken}`,
+    },
+  });
+};
 
 export const useDeleteThread = () => {
-    const queryClient = useQueryClient()
+  const queryClient = useQueryClient();
 
-    return useMutation({
-        mutationFn: deleteThread,
-        onSuccess: () => {
-            queryClient.invalidateQueries({
-                queryKey: ["threads-infinity"]
-            })
-        },
-        onError: (error) => {
-            toast.error(getError(error)), {
-                position: "top-center",
-                autoClose: 5000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "colored",
-            }
-        }
-    })
-}
-// delete threads
+  return useMutation({
+    mutationFn: deleteThread,
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["threads-infinity"],
+      });
+    },
+    onError: (error) => {
+      toast.error(getError(error)),
+        {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        };
+    },
+  });
+};
 
-
-// detail threads
 const fetchDetailThread = async (threadId: string) => {
     const response = await API.get(`findThreadById/${threadId}`, {
-        headers: {
-            Authorization: `Bearer ${jwtToken}`,
-        }
+      headers: {
+        Authorization: `Bearer ${jwtToken}`,
+      },
     });
+  
     return response.data;
-};
-
-export const useDetailThread = (threadId: string) => {
+  };
+  
+  export const useDetailThread = (threadId: string) => {
+    const queryClient = useQueryClient(); // Pindahkan deklarasi ini di sini
+  
     return useQuery({
-        queryKey: ["detail-thread"],
-        queryFn: () => fetchDetailThread(threadId),
-        refetchOnWindowFocus: false,
+      queryKey: ["detail-findThreadById"],
+      queryFn: () => fetchDetailThread(threadId),
+      refetchOnWindowFocus: false,
     });
-};
-// detail threads
-
-
-// post reply
-const postReply = (reply: ReplyPostType) => {
+  };
+  
+  const postReply = (reply: ReplyPostType) => {
     const threadId = reply.threadId;
     const payload = {
-        ...reply,
+      ...reply,
     };
     delete payload.threadId;
     return API.post(`addReply/${threadId}/reply`, payload, {
-        headers: {
-            Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
-        },
+      headers: {
+        Authorization: `Bearer ${jwtToken}`,
+      },
     });
-};
-
-export const usePostReply = (reset: () => void) => {
-    const queryCLient = useQueryClient();
-
+  };
+  
+  export const usePostReply = (reset: () => void) => {
+    const queryClient = useQueryClient();
+  
     return useMutation({
-        mutationFn: postReply,
-        onSuccess: () => {
-            queryCLient.invalidateQueries({
-                queryKey: ["detail-thread"],
-            });
-            reset();
-        },
-        onError: (error) => {
-            toast.error(getError(error), {
-                position: "top-center",
-                autoClose: 5000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "colored",
-            });
-        },
+      mutationFn: postReply,
+      onSuccess: () => {
+        queryClient.invalidateQueries({
+          queryKey: ["detail-findThreadById"],
+        });
+        reset();
+      },
+      onError: (error) => {
+        toast.error(getError(error), { // Perbaiki sintaks penanganan kesalahan toast
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
+      },
     });
-};
-// post reply
+  };

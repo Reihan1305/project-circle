@@ -1,19 +1,7 @@
-// Apa itu redux?
-// Redux merupokan sebuah package yang membantu mendistribusikan pemanggilan ke seluruh Aplikasi kita
-
-// Contohnya adalah pengeras suara yang berfungsi untuk menyampaikan sebuah informasi secara global
-// jadi setiap yang ada di aplikasi dapat menerima informasi tersebut tanpa harus berada dalam ruang yang sama
-
 import { API } from "@/utils/api"
 import getError from "@/utils/getError"
 import { PayloadAction, createAsyncThunk } from "@reduxjs/toolkit"
-// payload action ini tipe dari si redux toolkit yang secara default membawa payload
-// createAsyncThunk ini sama aaja fungsinya kaya async, memanggil data secara asinkron dalam pemanggilan API
-
-
 import { createSlice } from "@reduxjs/toolkit"
-// ini untuk ngebuat slice di reduxnya. fungsinya untuk membagi kode agar mudah dikelola
-
 import { jwtDecode } from "jwt-decode"
 
 const jwtToken:any = localStorage.getItem("jwtToken")

@@ -52,7 +52,7 @@ export default function Suggested() {
                                 borderRadius="full"
                                 boxSize="45px"
                                 objectFit="cover"
-                                src={suggested.photoprofil}
+                                src={suggested.photoprofil === "" ? "../../public/user-solid.svg":suggested.photoprofil}
                                 alt={suggested.fullname}
                               />
                             </Text>

@@ -11,8 +11,9 @@ interface Login {
 
 interface FollowType {
     id: string;
-    follower: FillFollower;
-    following: FillFollower;
+    followerid: string;
+    followingid: string;
+    isfollow:boolean
 };
 
 interface FillFollower {
@@ -30,8 +31,8 @@ interface UserProfileType {
     password: null;
     photoprofil: string;
     bio: string;
-    created_at: string;
-    updated_at: string;
+    createdAt: string;
+    updatedAt: string;
     follower: FollowType[];
     following: FollowType[];
 }
@@ -44,8 +45,8 @@ interface SearchUserType {
     password: null;
     photoprofil: string;
     bio: string | null;
-    created_at: string;
-    updated_at: string;
+    createdAt: string;
+    updatedAt: string;
 }
 
 interface Suggested {
@@ -75,8 +76,8 @@ interface ThreadHomeType {
     id: string;
     content: string;
     image: string;
-    created_at: string;
-    updated_at: string;
+    createdAt: string;
+    updatedAt: string;
     user: {
         id: string;
         username: string;
@@ -92,8 +93,8 @@ interface ThreadHomeType {
 
 interface ThreadLikeType {
     id: string;
-    created_at: string;
-    updated_at: string;
+    createdAt: string;
+    updatedAt: string;
     user: {
         id: string;
         username: string;
@@ -106,9 +107,9 @@ interface ThreadReplyType {
     id: string;
     content: string;
     image: string;
-    created_at: string;
-    updated_at: string;
-    user: {
+    createdAt: string;
+    updatedAt: string;
+    createdBy: {
         id: string;
         username: string;
         fullname: string;
