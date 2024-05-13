@@ -9,8 +9,10 @@ export default function Login() {
     const {form, handleChange, handleLogin, isLoading, isError, error, isLoginSuccess} = useLogin();
     
     useEffect(() => {
-        console.log("ini islogin", isLoginSuccess);
         if (isLoginSuccess) {
+            setTimeout(() => {
+                window.location.reload
+            }, 5000);
             navigate("/");
         }
     }, [isLoginSuccess]);

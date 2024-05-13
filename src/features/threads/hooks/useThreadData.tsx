@@ -30,6 +30,8 @@ export const useInfinityThreads = () => {
 };
 
 const postThread = (thread: ThreadPostType) => {
+  console.log(thread);
+  
   return API.post("addThread", thread, {
     headers: {
       Authorization: `Bearer ${jwtToken}`,
@@ -155,13 +157,16 @@ const fetchDetailThread = async (threadId: string) => {
   
   const postReply = (reply: ReplyPostType) => {
     const threadId = reply.threadId;
+    
     const payload = {
       ...reply,
     };
     delete payload.threadId;
+    
     return API.post(`addReply/${threadId}/reply`, payload, {
       headers: {
         Authorization: `Bearer ${jwtToken}`,
+        "Content-Type": "multipart/form-data",
       },
     });
   };
@@ -178,6 +183,7 @@ const fetchDetailThread = async (threadId: string) => {
         reset();
       },
       onError: (error) => {
+        console.log(error)
         toast.error(getError(error), {
           position: "top-center",
           autoClose: 5000,

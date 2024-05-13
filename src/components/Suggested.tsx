@@ -56,9 +56,9 @@ export default function Suggested() {
                                 alt={suggested.fullname}
                               />
                             </Text>
-                            <Box>
+                            <Box overflow={"hidden"} width={"200px"}>
                               <Text fontSize={"sm"}>{suggested.fullname}</Text>
-                              <Text fontSize={"sm"} color={"gray.400"}>
+                              <Text fontSize={"sm"} color={"gray.400"} overflow={"hidden"}>
                                 @{suggested.username}
                               </Text>
                             </Box>

@@ -87,7 +87,7 @@ export default function Search() {
                                 ) : (
                                     <>
                                         {!users.data.length ? (
-                                            <Text fontSize={"lmd"}>No Data Dound</Text>
+                                            <Text fontSize={"lmd"}>No User Found</Text>
                                         ) : (
                                             <>
                                                 {users.data.map(

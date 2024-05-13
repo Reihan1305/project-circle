@@ -21,7 +21,7 @@ export function useEditProfile() {
     setForm({
       fullname: profile.data?.fullname || "",
       password: "",
-      bio: "",
+      bio: profile.data?.bio || "",
     });
   }, [profile]);
 
@@ -46,8 +46,8 @@ export function useEditProfile() {
 
       const response = await API.post(`updatewhitoutimage/${idUser}`, form, {
         headers: {
-          Authorization: `Bearer ${jwtToken}`,
-        },
+          Authorization: `Bearer ${jwtToken}`
+      },
       });
 
       toast.success(response.data.message, {

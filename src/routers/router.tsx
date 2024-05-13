@@ -10,6 +10,7 @@ import SearchPage from '@/pages/SearchPage';
 import ProfilePage from '@/pages/ProfilePage';
 import EditProfilePage from '@/pages/EditProfilePage';
 import ReplyPage from '@/pages/ReplyPage';
+import FollowPage from "@/pages/FollowPage"
 
 function Router() {
     const [checkAuthFinish, setCheckAuthFinish] = useState<boolean>(true)
@@ -147,6 +148,19 @@ function Router() {
                                     <IsLogin>
                                         <Main>
                                             <EditProfilePage />
+                                        </Main>
+                                    </IsLogin>
+                                }
+                            />
+                        </Route>
+
+                        <Route path="/follow">
+                            <Route
+                                index
+                                element={
+                                    <IsLogin>
+                                        <Main>
+                                            <FollowPage />
                                         </Main>
                                     </IsLogin>
                                 }

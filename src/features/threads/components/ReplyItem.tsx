@@ -9,7 +9,6 @@ interface ReplyItemInterface {
 
 export default function ReplyItem({ reply }: ReplyItemInterface) {
   const { isOpen, onOpen, onClose } = useDisclosure();
-console.log(reply);
 
   return (
     <Fragment>

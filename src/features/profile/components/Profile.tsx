@@ -1,46 +1,25 @@
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useEffect, useState,useRef } from "react";
 import { useAppDispatch, useAppSelectore } from "@/redux/store";
 import { getDetailUser } from "@/redux/user/DetailUserSlice";
 import { getProfile } from "@/redux/user/ProfileSlice";
 import { API } from "@/utils/api";
 import getError from "@/utils/getError";
-import {
-  Alert,
-  AlertDescription,
-  AlertIcon,
-  Box,
-  Button,
-  Card,
-  CardBody,
-  Flex,
-  Image,
-  Spinner,
-  Tab,
-  TabList,
-  TabPanel,
-  TabPanels,
-  Tabs,
-  Text,
-} from "@chakra-ui/react";
+import {Alert,AlertDescription,AlertIcon,Box,Button,Card,CardBody,Flex,Image,Spinner,Tab,TabList,TabPanel,TabPanels,Tabs,Text,Input} from "@chakra-ui/react";
 import { FiEdit3 } from "react-icons/fi";
 import { Link, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
+import { useEditImage } from "../hooks/useEditImage";
 
 export default function Profile() {
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const params = useParams();
   const dispatch = useAppDispatch();
   const [followerArray, setFollowerArray] = useState<any[]>([]);
   const [followingArray, setFollowingArray] = useState<any[]>([]);
-
-  const {
-    data: detailUser,
-    isLoading,
-    isError,
-    error
-  } = useAppSelectore((state) => state.detailUser);
+  const {data:detailUser,error,isError,isLoading} = useAppSelectore((state) => state.detailUser);
   const { data: profile } = useAppSelectore((state) => state.profile);
   const jwtToken = localStorage.getItem("jwtToken");
-
+  const {handleImageChange} = useEditImage()
   useEffect(() => {
     dispatch(getDetailUser(params.userId || ""));
   }, [params]);
@@ -70,7 +49,7 @@ export default function Profile() {
 
     const fetchFollowingData = async () => {
       const fetchedFollowingArray = await Promise.all(
-        detailUser?.follower.map(async (following) => {
+        detailUser?.follower.map(async (following:any) => {
           try {
             const response = await API.get(
               "findbyUserid/" + following.followingid,
@@ -99,6 +78,11 @@ export default function Profile() {
     }
   }, [detailUser, jwtToken]);
 
+  const handleImageOnClick =() =>{
+    if(fileInputRef.current){
+      fileInputRef.current.click()
+    }
+  }
   const followAndUnfollow = async () => {
     try {
       await API.post("follow/" + params.userId, "", {
@@ -122,7 +106,6 @@ export default function Profile() {
       });
     }
   };
-  console.log(detailUser.following);
   
   return (
     <Fragment>
@@ -157,18 +140,45 @@ export default function Profile() {
                         height={"80px"}
                         objectFit={"cover"}
                       />
-                      <Image
+                      {! detailUser?.id === profile?.id ?
+                        (<Image
                         borderRadius="full"
                         bgColor={"#3a3a3a"}
                         border={"5px solid #3a3a3a"}
                         boxSize="75px"
                         objectFit="cover"
-                        src={detailUser?.photoprofil === "" ? "../../public/user-solid.svg" :detailUser.photoprofil}
+                        src={detailUser?.photoprofil === "" ?"../../public/user-solid.svg":detailUser?.photoprofil}
                         alt={detailUser?.fullname}
                         position={"absolute"}
                         top={"40px"}
                         left={"20px"}
-                      />
+                      />):
+                      (
+                      <>
+                      <Box mb={"20px"} onClick={handleImageOnClick} >
+                         <Image
+                          borderRadius="full"
+                          bgColor={"#3a3a3a"}
+                          border={"5px solid #3a3a3a"}
+                          boxSize="75px"
+                          objectFit="cover"
+                          src={detailUser?.photoprofil === "" ?"../../public/user-solid.svg":detailUser?.photoprofil}
+                          alt={detailUser?.fullname}
+                          position={"absolute"}
+                          top={"40px"}
+                          left={"20px"}
+                        />
+                        </Box>
+                         <Input bg={"white"}
+                         type="file"
+                         accept="image/*"
+                         onChange={handleImageChange}
+                         style={{ display: "none" }}
+                         ref={fileInputRef}
+                       />
+                       </>
+                      )
+                      }
                       {profile?.id === detailUser?.id && (
                         <Link to={`/edit-profile`}>
                           <Button

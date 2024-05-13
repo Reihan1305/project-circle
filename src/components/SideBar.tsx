@@ -4,7 +4,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { BiLogOut } from "react-icons/bi";
 import { BsHouse, BsHouseFill } from "react-icons/bs";
-import { FaCircleUser, FaRegCircleUser } from "react-icons/fa6";
+import { FaCircleUser, FaRegCircleUser,FaHeart,FaRegHeart } from "react-icons/fa6";
 import {RiUserSearchFill,RiUserSearchLine} from "react-icons/ri";
 import { jwtDecode } from 'jwt-decode'
 
@@ -67,6 +67,20 @@ export default function Sidebar() {
                                 </Text>
                             </Box>
                         </Link>
+                        <Link to={`/follow`}>
+                            <Box display={"flex"} alignItems={"center"} gap={3} mb={6}>
+                                <Text fontSize={"2xl"}>
+                                    {location.pathname === "/follow" ? (
+                                        <FaHeart />
+                                    ) : (
+                                        <FaRegHeart />
+                                    )}
+                                </Text>
+                                <Text fontSize={"md"} mt={1}>
+                                    Follow
+                                </Text>
+                            </Box>
+                        </Link>
                         <Link to={`/my-profile/${idToken}`}>
                             <Box display={"flex"} alignItems={"center"} gap={3} mb={6}>
                                 <Text fontSize={"2xl"}>
@@ -103,7 +117,8 @@ export default function Sidebar() {
                                 }).then((result) => {
                                     if (result.isConfirmed) {
                                         localStorage.clear();
-                                        navigate("/login");
+                                        window.location.reload
+                                        navigate('/login');
                                     }
                                 });
                             }}

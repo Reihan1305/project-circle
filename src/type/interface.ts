@@ -57,9 +57,10 @@ interface Suggested {
 };
 
 interface EditProfileType {
-    fullname: string;
-    password: string;
-    bio: string;
+    fullname?: string;
+    password?: string;
+    bio?: string;
+    image?:null|string|File
 }
 interface ThreadPostType {
     content: string;

@@ -49,6 +49,7 @@ export function useLogin() {
             seterror(getError(error))
         } finally {
             setIsLoading(false)
+            window.location.reload
         }
     }
 

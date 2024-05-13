@@ -2,9 +2,7 @@ import {Button,ButtonSpinner,Input,Modal,ModalBody,ModalCloseButton,ModalContent
 import { Fragment, useState } from "react";
 import { RiImageAddFill } from "react-icons/ri";
 import { usePostReply } from "../hooks/useThreadData";
-
 export default function ReplyForm({ threadId }: { threadId: string }) {
-
     const [content, setContent] = useState<string>("");
     const [image, setImage] = useState<File | null>(null);
 
